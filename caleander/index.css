@@ -1,0 +1,37 @@
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 300px;
+}
+
+#container {
+  background-color: antiquewhite;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+#caleanderHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#caleanderBody {
+  display: flex;
+  flex-direction: column;
+}
+
+#dayOfWeek {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+
+#calendarDatas {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 5px;
+}
