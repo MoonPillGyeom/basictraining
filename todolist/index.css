@@ -1,0 +1,32 @@
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 300px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: blanchedalmond;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 10px;
+}
+
+.inputDiv {
+  position: relative;
+}
+
+#todoInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.addBtn {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}
