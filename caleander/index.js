@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
   let currentYear = today.getFullYear();
   let currentMonth = today.getMonth();
-  const currentDay = today.getDate();
 
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
@@ -28,22 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateCaleander(year, month) {
-    const day = new Date().getDate();
-    console.log(day);
     getCurrentDate(year, month, day);
     getCurrentMonthInDays(year, month);
   }
 
-  getCurrentDate(currentYear, currentMonth, currentDay);
+  getCurrentDate(currentYear, currentMonth);
   getCurrentWeek();
   getCurrentMonthInDays(currentYear, currentMonth);
 });
 
-function getCurrentDate(currentYear, currentMonth, currentDay) {
+function getCurrentDate(currentYear, currentMonth) {
   const currentDate = document.getElementById("currentDate");
-  currentDate.innerText = `${currentYear}년 ${
-    currentMonth + 1
-  }월 ${currentDay}일`;
+  currentDate.innerText = `${currentYear}년 ${currentMonth + 1}월`;
 }
 
 function getCurrentWeek() {
