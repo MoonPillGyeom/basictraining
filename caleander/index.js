@@ -1,19 +1,45 @@
+const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
+
 document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth();
+  const currentDay = today.getDate();
+
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
-  const calendarDatas = document.getElementById("calendarDatas");
 
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-  const currentDay = today.getDay();
+  prevBtn.addEventListener("click", () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    updateCaleander(currentYear, currentMonth);
+  });
 
-  getCurrentDate(currentMonth, currentYear, currentDay);
+  nextBtn.addEventListener("click", () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentMonth++;
+    }
+    updateCaleander(currentYear, currentMonth);
+  });
+
+  function updateCaleander(year, month) {
+    const day = new Date().getDate();
+    console.log(day);
+    getCurrentDate(year, month, day);
+    getCurrentMonthInDays(year, month);
+  }
+
+  getCurrentDate(currentYear, currentMonth, currentDay);
   getCurrentWeek();
-  getCurrentMonthInDays(currentMonth, currentYear);
+  getCurrentMonthInDays(currentYear, currentMonth);
 });
 
-function getCurrentDate(currentMonth, currentYear, currentDay) {
+function getCurrentDate(currentYear, currentMonth, currentDay) {
   const currentDate = document.getElementById("currentDate");
   currentDate.innerText = `${currentYear}년 ${
     currentMonth + 1
@@ -21,7 +47,6 @@ function getCurrentDate(currentMonth, currentYear, currentDay) {
 }
 
 function getCurrentWeek() {
-  const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
   DAYS.forEach((data) => {
     const p = document.createElement("p");
     p.textContent = data;
@@ -29,13 +54,24 @@ function getCurrentWeek() {
   });
 }
 
-function getCurrentMonthInDays(currentMonth, currentYear) {
+function getCurrentMonthInDays(currentYear, currentMonth) {
   const calendarDatas = document.getElementById("calendarDatas");
+  calendarDatas.innerHTML = "";
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
+  getCurrentMonthInEmptyDays(currentYear, currentMonth, calendarDatas);
   for (let i = 1; i <= daysInMonth; i++) {
     const daySpan = document.createElement("span");
     daySpan.textContent = i;
     calendarDatas.appendChild(daySpan);
+  }
+}
+
+function getCurrentMonthInEmptyDays(currentYear, currentMonth) {
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+  const startDayOfWeek = firstDayOfMonth.getDay();
+
+  for (let i = 1; i <= startDayOfWeek; i++) {
+    const emptyDate = document.createElement("div");
+    calendarDatas.appendChild(emptyDate);
   }
 }
