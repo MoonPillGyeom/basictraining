@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("todoInput");
-  const addBtn = document.querySelector(".addBtn");
-  const todoList = document.querySelector(".todoList");
+  const addBtn = document.getElementById("addBtn");
+  const todoList = document.getElementById("todoList");
   function addTodo() {
     const todoText = input.value.trim();
     if (todoText === "") {
