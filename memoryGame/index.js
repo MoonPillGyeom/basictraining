@@ -7,8 +7,8 @@ function loadMockData() {
   return fetch("./mock.json").then((res) => res.json());
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadMockData().then((data) => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadMockData().then((data) => {
     mock = data;
     initGame();
   });
@@ -17,22 +17,25 @@ document.addEventListener("DOMContentLoaded", () => {
 function initGame() {
   const container = document.getElementById("container");
 
-  for (let repeat = 0; repeat < 2; repeat++) {
-    for (let i = 0; i < mock.length; i++) {
-      const card = document.createElement("div");
-      card.innerText = "";
+  const duplicated = [...mock, ...mock];
+  const shuffled = shuffleArray(duplicated);
+  console.log("duplicated : ", duplicated);
+  console.log("shuffled : ", shuffled);
 
-      card.setAttribute("data-id", i + repeat * mock.length);
-      card.setAttribute("data-name", mock[i].name);
-      card.classList.add("card");
-      card.style.width = "100px";
-      card.style.height = "200px";
-      card.style.backgroundColor = "black";
-      card.style.color = "white";
-      container.appendChild(card);
-      card.addEventListener("click", flatCard);
-    }
-  }
+  shuffled.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.innerText = "";
+
+    card.setAttribute("data-id", index);
+    card.setAttribute("data-name", item.name);
+    card.classList.add("card");
+    card.style.width = "100px";
+    card.style.height = "200px";
+    card.style.backgroundColor = "black";
+    card.style.color = "white";
+    container.appendChild(card);
+    card.addEventListener("click", flatCard);
+  });
 }
 
 function checkForMatch() {
@@ -50,6 +53,10 @@ function checkForMatch() {
     alert("You found a match");
     card1.removeEventListener("click", flatCard);
     card2.removeEventListener("click", flatCard);
+    card1.style.backgroundColor = "white";
+    card2.style.backgroundColor = "white";
+    card1.innerText = "";
+    card2.innerText = "";
   } else {
     card1.innerText = "";
     card2.innerText = "";
@@ -76,4 +83,11 @@ function flatCard() {
     canClick = false;
     setTimeout(checkForMatch, 500);
   }
+}
+
+function shuffleArray(array) {
+  return array
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
 }
