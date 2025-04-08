@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentMonth = 11;
       currentYear--;
     }
-    updateCaleander(currentYear, currentMonth);
+    updateCalendar(currentYear, currentMonth);
   });
 
   nextBtn.addEventListener("click", () => {
@@ -23,10 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentMonth = 0;
       currentMonth++;
     }
-    updateCaleander(currentYear, currentMonth);
+    updateCalendar(currentYear, currentMonth);
   });
 
-  function updateCaleander(year, month) {
+  function updateCalendar(year, month) {
     getCurrentDate(year, month, day);
     getCurrentMonthInDays(year, month);
   }
