@@ -2,7 +2,7 @@ const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 document.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
-  const { updateCalendar, prev, next } = createCalendarManager(
+  const { updateCalendar, handlePrev, handleNext } = createCalendarManager(
     today.getFullYear(),
     today.getMonth()
   );
@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   getCurrentWeek();
   updateCalendar();
 
-  document.getElementById("prevBtn").addEventListener("click", prev);
-  document.getElementById("nextBtn").addEventListener("click", next);
+  document.getElementById("prevBtn").addEventListener("click", handlePrev);
+  document.getElementById("nextBtn").addEventListener("click", handleNext);
 });
 
 // ----------------------------------------------------
@@ -26,25 +26,25 @@ function createCalendarManager(initialYear, initialMonth) {
     getCurrentMonthInDays(year, month);
   }
 
-  function prev() {
+  const handlePrev = () => {
     month--;
     if (month < 0) {
       month = 11;
       year--;
     }
     updateCalendar();
-  }
+  };
 
-  function next() {
+  const handleNext = () => {
     month++;
     if (month > 11) {
       month = 0;
       year++;
     }
     updateCalendar();
-  }
+  };
 
-  return { updateCalendar, prev, next };
+  return { updateCalendar, handlePrev, handleNext };
 }
 
 // ----------------------------------------------------
