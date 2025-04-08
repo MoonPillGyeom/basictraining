@@ -1,4 +1,4 @@
-import { WEATHER_KEY, WEATHER_INFO } from "./config.js";
+import { WEATHER_KEY, WEATHER_META } from "./config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const today = getTodayYYYYMMDD();
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function getTodayYYYYMMDD() {
-  const today = new Date();
+  let today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const date = String(today.getDate()).padStart(2, "0");
@@ -24,6 +24,7 @@ const getWeather = async (date) => {
 };
 
 function parseWeatherData(weatherInfo) {
+  console.log(weatherInfo);
   const items = weatherInfo.body.items.item;
 
   return items.reduce((acc, curr) => {
@@ -36,10 +37,10 @@ function displayWeatherInfo(data) {
   const container = document.getElementById("todayWeather");
   container.innerHTML = "";
   Object.entries(data).forEach(([key, value]) => {
-    const label = WEATHER_INFO[key];
-    if (label) {
+    const meta = WEATHER_META[key];
+    if (meta) {
       const p = document.createElement("p");
-      p.textContent = `${label}는 ${value}입니다`;
+      p.textContent = `${meta.label}는 ${value}${meta.unit}입니다`;
       container.appendChild(p);
     }
   });

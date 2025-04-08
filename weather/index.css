@@ -3,3 +3,16 @@ body {
   flex-direction: column;
   padding: 300px;
 }
+
+#btnFlex {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background-color: blueviolet;
+  width: 40%;
+  color: white;
+  border: none;
+  border-radius: 25px;
+}
