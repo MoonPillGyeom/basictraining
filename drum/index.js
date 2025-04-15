@@ -1,14 +1,13 @@
-const DRUM_KEYS = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
-const DRUM_NAMES = [
-  "CLAP",
-  "HIHAT",
-  "KICK",
-  "OPENHAT",
-  "BOOM",
-  "RIDE",
-  "SNARE",
-  "TOM",
-  "TINK",
+const DRUM_KEY_MAP = [
+  { en: "A", kr: "ㅁ", sound: "CLAP" },
+  { en: "S", kr: "ㄴ", sound: "HIHAT" },
+  { en: "D", kr: "ㅇ", sound: "KICK" },
+  { en: "F", kr: "ㄹ", sound: "OPENHAT" },
+  { en: "G", kr: "ㅎ", sound: "BOOM" },
+  { en: "H", kr: "ㅗ", sound: "RIDE" },
+  { en: "J", kr: "ㅓ", sound: "SNARE" },
+  { en: "K", kr: "ㅏ", sound: "TOM" },
+  { en: "L", kr: "ㅣ", sound: "TINK" },
 ];
 document.addEventListener("DOMContentLoaded", () => {
   createAudio();
@@ -19,31 +18,35 @@ document.addEventListener("DOMContentLoaded", () => {
     playSound(keyUpperCase);
   });
 
-  const playSound = (key) => {
-    const audio = document.querySelector(`audio[data-key="${key}"]`);
-    const divKey = document.querySelector(`.key[data-key="${key}"]`);
-    if (!audio) return;
-    audio.currentTime = 0;
-    audio.play();
-    divKey.classList.add("playing");
-  };
-  const keys = document.querySelectorAll(".key");
-  keys.forEach((key) =>
+  const divKeys = document.querySelectorAll(".key");
+  divKeys.forEach((key) =>
     key.addEventListener("transitionend", removeTransition)
   );
 });
 
+const playSound = (key) => {
+  const matched = drumKeyMatch(key); // 함수로 분리된 부분
+  if (!matched) return;
+  const { en } = matched;
+  const audio = document.querySelector(`audio[data-key="${en}"]`);
+  const divKey = document.querySelector(`.key[data-key="${en}"]`);
+  if (!audio) return;
+  audio.currentTime = 0;
+  audio.play();
+  divKey.classList.add("playing");
+};
+
 // UI 생성
 function createDrumUI() {
   const container = document.getElementById("container");
-  DRUM_KEYS.forEach((key, i) => {
+  DRUM_KEY_MAP.forEach(({ en, kr, sound }, i) => {
     const kbd = document.createElement("kbd");
     const divKey = document.createElement("div");
     const span = document.createElement("span");
-    kbd.innerText = key;
+    kbd.innerText = en;
     divKey.className = "key";
-    divKey.dataset.key = key;
-    span.innerText = DRUM_NAMES[i];
+    divKey.dataset.key = en;
+    span.innerText = sound;
     span.className = "soundName";
     container.appendChild(divKey);
     divKey.appendChild(kbd);
@@ -53,10 +56,10 @@ function createDrumUI() {
 
 // 오디오 생성
 function createAudio() {
-  DRUM_NAMES.forEach((k, i) => {
+  DRUM_KEY_MAP.forEach(({ en, _, sound }, i) => {
     const audio = document.createElement("audio");
-    audio.src = `sounds/${k.toLowerCase()}.wav`;
-    audio.dataset.key = DRUM_KEYS[i];
+    audio.src = `sounds/${sound.toLowerCase()}.wav`;
+    audio.dataset.key = en;
     document.body.appendChild(audio);
   });
 }
@@ -64,4 +67,9 @@ function createAudio() {
 function removeTransition(e) {
   if (e.propertyName !== "transform") return;
   this.classList.remove("playing");
+}
+
+// 영어/한글 키 매칭 함수
+function drumKeyMatch(key) {
+  return DRUM_KEY_MAP.find(({ en, kr }) => key === en || key === kr);
 }
