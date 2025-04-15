@@ -1,35 +1,67 @@
-/*
- * 드럼 구현과정 정리
- * 1. 우선 드럼을 치는것 같은 UI를 만든다. button처럼 생긴걸로 o
- * 2. 드럼 사운드를 구해온다
- * 3. 해당 UI를 클릭 하거나 특정 keyDown, or Keyup등과 같은 이벤트를 물려서 web API사운드를 지정한다 o
- * 4. 특정 키를 배열에 담아 저장기능을 만들어 저장기능을 담은 버튼을 클릭시 해당 키를 이용하여 드럼 사운드가 나오게 한다.
- * 추가 요구사항
- * 1. 4번에 해당하는 버튼을 전 사운드, 전전 사운드 처럼 여러 사운드를 저장하거나, 중복으로 사운드를 내보낼 수 있는 기능
- */
-
-const DRUM_KEYS = ["a", "s", "d", "f", "g"];
-
+const DRUM_KEYS = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+const DRUM_NAMES = [
+  "CLAP",
+  "HIHAT",
+  "KICK",
+  "OPENHAT",
+  "BOOM",
+  "RIDE",
+  "SNARE",
+  "TOM",
+  "TINK",
+];
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("container");
-
-  // 버튼 UI 생성
-  DRUM_KEYS.forEach((key) => {
-    const btn = document.createElement("button");
-    btn.innerText = key.toUpperCase();
-    btn.className = "btn";
-    btn.addEventListener("click", () => playSound(key));
-    container.appendChild(btn);
-  });
+  createAudio();
+  createDrumUI();
 
   document.addEventListener("keydown", (e) => {
-    const key = e.key.toLowerCase();
-    if (DRUM_KEYS.includes(key)) {
-      playSound(key);
-    }
+    const keyUpperCase = e.key.toUpperCase();
+    playSound(keyUpperCase);
   });
 
   const playSound = (key) => {
-    console.log(`Play sound for key: ${key}`);
+    const audio = document.querySelector(`audio[data-key="${key}"]`);
+    const divKey = document.querySelector(`.key[data-key="${key}"]`);
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+    divKey.classList.add("playing");
   };
+  const keys = document.querySelectorAll(".key");
+  keys.forEach((key) =>
+    key.addEventListener("transitionend", removeTransition)
+  );
 });
+
+// UI 생성
+function createDrumUI() {
+  const container = document.getElementById("container");
+  DRUM_KEYS.forEach((key, i) => {
+    const kbd = document.createElement("kbd");
+    const divKey = document.createElement("div");
+    const span = document.createElement("span");
+    kbd.innerText = key;
+    divKey.className = "key";
+    divKey.dataset.key = key;
+    span.innerText = DRUM_NAMES[i];
+    span.className = "soundName";
+    container.appendChild(divKey);
+    divKey.appendChild(kbd);
+    divKey.appendChild(span);
+  });
+}
+
+// 오디오 생성
+function createAudio() {
+  DRUM_NAMES.forEach((k, i) => {
+    const audio = document.createElement("audio");
+    audio.src = `sounds/${k.toLowerCase()}.wav`;
+    audio.dataset.key = DRUM_KEYS[i];
+    document.body.appendChild(audio);
+  });
+}
+
+function removeTransition(e) {
+  if (e.propertyName !== "transform") return;
+  this.classList.remove("playing");
+}

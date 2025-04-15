@@ -1,40 +1,48 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
 #container {
   display: flex;
-  gap: 30px;
-  margin-bottom: 60px;
+  flex: 1;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
   border: none;
 }
 
-.btn {
-  width: 80px;
-  height: 80px;
-  margin: 10px;
-  border-radius: 50%;
-  background-color: #ff4d4f;
+kbd {
+  display: block;
+  font-size: 4rem;
+}
+
+.key {
+  border: 0.4rem solid black;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  padding: 1rem 0.5rem;
+  transition: all 0.07s ease;
+  width: 10rem;
+  text-align: center;
   color: white;
-  box-shadow: 0 6px #c0392b;
-  transition: all 0.1s ease-in-out;
+  background-color: gray;
+  text-shadow: 0 0 0.5rem black;
 }
 
-.btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px #c0392b;
-  background-color: #e84118;
+.playing {
+  transform: scale(1.1);
+  border-color: #e50c14;
+  box-shadow: 0 0 1rem #ff0033;
 }
 
-#playSaved {
-  width: 120px;
-  height: 45px;
-  background-color: #e510d0;
-  border-radius: 25px;
-  color: white;
-}
-
-#playSaved:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px #aa0c9a;
-  background-color: #f511df;
+.soundName {
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+  color: #f71921;
 }
